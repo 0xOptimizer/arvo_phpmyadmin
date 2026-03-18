@@ -25,14 +25,12 @@ $i = 0;
  */
 $i++;
 /* Authentication type */
-$cfg['Servers'][$i]['auth_type'] = 'signon';
-$cfg['Servers'][$i]['SignonSession'] = 'NydusSignonSession';
-$cfg['Servers'][$i]['SignonURL'] = 'https://pma.arvo.team/nydus_signon.php';
-$cfg['Servers'][$i]['LogoutURL'] = 'https://nydus.arvo.team/databases';
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
 $cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
+
 
 /**
  * Nydus

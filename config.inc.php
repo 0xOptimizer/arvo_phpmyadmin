@@ -45,6 +45,7 @@ $cfg['Servers'][$i]['SignonSession'] = 'NydusSignonSession';
 $cfg['Servers'][$i]['SignonURL']     = 'https://pma.arvo.team/nydus_signon.php';
 $cfg['Servers'][$i]['LogoutURL']     = 'https://nydus.arvo.team/databases';
 
+$cfg['ServerDefault'] = 1;
 /**
  * phpMyAdmin configuration storage settings.
  */

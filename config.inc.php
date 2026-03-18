@@ -13,7 +13,8 @@ declare(strict_types=1);
  * This is needed for cookie based authentication to encrypt the cookie.
  * Needs to be a 32-bytes long string of random bytes. See FAQ 2.10.
  */
-$cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+$env = parse_ini_file('/opt/nydus/.env');
+$cfg['blowfish_secret'] = $env['BLOWFISH_SECRET'] ?? '';
 
 /**
  * Servers configuration

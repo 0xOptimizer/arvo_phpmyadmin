@@ -4,46 +4,39 @@ session_start();
 
 $token = $_GET['token'] ?? '';
 
-if (!empty($token)) {
-    $credentials_file = '/tmp/nydus_pma_' . preg_replace('/[^a-f0-9]/', '', $token) . '.json';
+if (empty($token)) {
+    http_response_code(400);
+    exit('Missing token.');
+}
 
-    if (!file_exists($credentials_file)) {
-        http_response_code(403);
-        exit('Invalid or expired token.');
-    }
+$credentials_file = '/tmp/nydus_pma_' . preg_replace('/[^a-f0-9]/', '', $token) . '.json';
 
-    $age = time() - filemtime($credentials_file);
-    if ($age > 30) {
-        unlink($credentials_file);
-        http_response_code(403);
-        exit('Token expired.');
-    }
+if (!file_exists($credentials_file)) {
+    http_response_code(403);
+    exit('Invalid or expired token.');
+}
 
-    $data = json_decode(file_get_contents($credentials_file), true);
+$age = time() - filemtime($credentials_file);
+if ($age > 30) {
     unlink($credentials_file);
-
-    if (!isset($data['username'], $data['password'])) {
-        http_response_code(400);
-        exit('Malformed credentials file.');
-    }
-
-    $_SESSION['PMA_single_signon_user']     = $data['username'];
-    $_SESSION['PMA_single_signon_password'] = $data['password'];
-    $_SESSION['PMA_single_signon_host']     = '127.0.0.1';
-    $_SESSION['PMA_single_signon_port']     = '';
-    $_SESSION['PMA_single_signon_db']       = '';
-    $_SESSION['PMA_single_signon_done']     = false;
-
-    session_write_close();
-
-    header('Location: https://pma.arvo.team/index.php');
-    exit;
+    http_response_code(403);
+    exit('Token expired.');
 }
 
-if (isset($_SESSION['PMA_single_signon_user']) && $_SESSION['PMA_single_signon_done'] === false) {
-    session_write_close();
-    exit;
+$data = json_decode(file_get_contents($credentials_file), true);
+unlink($credentials_file);
+
+if (!isset($data['username'], $data['password'])) {
+    http_response_code(400);
+    exit('Malformed credentials file.');
 }
 
-http_response_code(403);
-exit('No active signon session.');
+$_SESSION['PMA_single_signon_user']     = $data['username'];
+$_SESSION['PMA_single_signon_password'] = $data['password'];
+$_SESSION['PMA_single_signon_host']     = '127.0.0.1';
+$_SESSION['PMA_single_signon_done']     = false;
+
+session_write_close();
+
+header('Location: https://pma.arvo.team/index.php');
+exit;

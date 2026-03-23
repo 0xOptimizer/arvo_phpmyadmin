@@ -34,9 +34,10 @@ if (!isset($data['username'], $data['password'])) {
 $_SESSION['PMA_single_signon_user']     = $data['username'];
 $_SESSION['PMA_single_signon_password'] = $data['password'];
 $_SESSION['PMA_single_signon_host']     = '127.0.0.1';
-$_SESSION['PMA_single_signon_done']     = false;
+$_SESSION['PMA_single_signon_done']     = true;
 
 session_write_close();
 
-header('Location: https://pma.arvo.team/index.php');
+$server = isset($_GET['server']) ? (int)$_GET['server'] : 2;
+header('Location: https://pma.arvo.team/index.php?server=' . $server);
 exit;
